@@ -54,10 +54,13 @@ def scrap_into_dictionary(url_template, pages):
 
             agency_name = [name.text.strip() for name in item.find_elements(By.CLASS_NAME, "agency-name")][0]
 
+            price_amount = price_to_toman(price)
+
+
             property_dict[item_number] = {
                 'id': link.split('/')[-1],
                 'link': link,
-                'price': price_to_toman(price),
+                'price': price_amount,
                 'location': location,
                 'usage': usage,
                 'meterage': int(meterage),
@@ -78,6 +81,7 @@ if __name__ == "__main__":
 
     db = Database(host='127.0.0.1', port=5432, database='kilid_test_db', user='hosseinmh', password='ASD!@#asd123')
     db.connect()
+
     columns = '''
     id SERIAL PRIMARY KEY,
     link VARCHAR(200),
@@ -90,8 +94,16 @@ if __name__ == "__main__":
     agency_name VARCHAR(100)
     '''
     db.create_table(table_name='properties', columns=columns)
-
+    id_list = []
     for property in all_results.values():
-        db.insert_data(table_name='properties', values=str(tuple(property.values())))
+
+        # Insert data into the table with format: (ID, link, price, location, usage, meterage, rooms, parking, agency_name)
+        value = property['id']
+        if value not in id_list:
+            values = str(tuple(property.values())).replace('None','NULL')
+            db.insert_data(table_name='properties', values= values)
+            id_list.append(value)
+        else:
+            print(value, 'exists')
 
     db.close()
