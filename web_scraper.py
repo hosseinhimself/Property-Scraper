@@ -24,13 +24,13 @@ def price_to_toman(text):
     return price
 
 
-def scrap_into_dictionary(url, pages):
+def scrap_into_dictionary(url_template, pages):
     driver = webdriver.Firefox()
     property_dict = {}
     item_number = 1
     for page_number in range(1, pages + 1):
         print(page_number)
-        url = url + str(page_number)
+        url = url_template + str(page_number)
         driver.get(url)
         all_items = driver.find_elements(By.CLASS_NAME, "kilid-listing-card")
 
@@ -74,7 +74,7 @@ def scrap_into_dictionary(url, pages):
 
 if __name__ == "__main__":
     url = "https://kilid.com/buy/tehran-region5?listingTypeId=1&location=246745&sort=DATE_DESC&page="
-    all_results = scrap_into_dictionary(url=url, pages=2)
+    all_results = scrap_into_dictionary(url_template=url, pages=10)
 
     db = Database(host='127.0.0.1', port=5432, database='kilid_test_db', user='hosseinmh', password='ASD!@#asd123')
     db.connect()
