@@ -1,3 +1,4 @@
+# Required Libraries and modules
 import re
 import time
 from selenium import webdriver
@@ -6,6 +7,11 @@ from selenium.webdriver.common.by import By
 
 
 def price_to_toman(text):
+    '''
+    Property prices are written in letters.
+    For processing, it is necessary to convert them into digits.
+    '''
+
     price = None
     pattern = r"(\d+(\.\d+)?)\s+(میلیون|میلیارد)"
     matches = re.findall(pattern, text)
@@ -32,8 +38,11 @@ def scrap_into_dictionary(url_template, pages):
         print(page_number)
         url = url_template + str(page_number)
         driver.get(url)
+
+        # Get all cards of the page
         all_items = driver.find_elements(By.CLASS_NAME, "kilid-listing-card")
 
+        # Collect information for each card
         for item in all_items:
             link = item.get_attribute('href')
             title = [title.text.strip() for title in item.find_elements(By.CLASS_NAME, "title")][0].split('/')
@@ -44,6 +53,8 @@ def scrap_into_dictionary(url_template, pages):
             meterage = 0
             rooms = 0
             parking = 0
+
+            # collect features
             for feature in features:
                 if 'متر' in feature:
                     meterage = feature.split()[0]
@@ -70,6 +81,8 @@ def scrap_into_dictionary(url_template, pages):
             }
 
             item_number += 1
+
+        # A delay is neccessary
         time.sleep(5)
 
     return property_dict
@@ -79,9 +92,11 @@ if __name__ == "__main__":
     url = "https://kilid.com/buy/tehran-region5?listingTypeId=1&location=246745&sort=DATE_DESC&page="
     all_results = scrap_into_dictionary(url_template=url, pages=10)
 
+    # Connect to the database
     db = Database(host='127.0.0.1', port=5432, database='kilid_test_db', user='hosseinmh', password='ASD!@#asd123')
     db.connect()
 
+    # Define table columns and data types
     columns = '''
     id SERIAL PRIMARY KEY,
     link VARCHAR(200),
@@ -93,17 +108,13 @@ if __name__ == "__main__":
     parking INTEGER,
     agency_name VARCHAR(100)
     '''
+
+    # Create the table of properties
     db.create_table(table_name='properties', columns=columns)
     id_list = []
     for property in all_results.values():
-
         # Insert data into the table with format: (ID, link, price, location, usage, meterage, rooms, parking, agency_name)
-        value = property['id']
-        if value not in id_list:
-            values = str(tuple(property.values())).replace('None','NULL')
-            db.insert_data(table_name='properties', values= values)
-            id_list.append(value)
-        else:
-            print(value, 'exists')
+        values = str(tuple(property.values())).replace('None', 'NULL')
+        db.insert_data(table_name='properties', values=values)
 
     db.close()

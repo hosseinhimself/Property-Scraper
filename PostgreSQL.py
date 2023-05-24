@@ -1,3 +1,4 @@
+# Required Library for PostgreSQL
 import psycopg2
 
 
@@ -24,6 +25,7 @@ class Database:
             print("Error connecting to PostgreSQL:", e)
 
     def execute_query(self, query):
+        # SQL commands are made in other methods. They use this method to run the SQL commands
         try:
             cursor = self.connection.cursor()
             cursor.execute(query)
@@ -33,10 +35,12 @@ class Database:
             print("Error executing query:", e)
 
     def create_table(self, table_name, columns):
+        # SQL format : CREATE TABLE properties (col1 DATATYPE, col2 DATATYPE, ...)
         query = f"CREATE TABLE {table_name} ({columns})"
         self.execute_query(query)
 
     def insert_data(self, table_name, values):
+        # SQL format : INSERT INTO properties VALUES (col1, col2, ...)
         query = f"INSERT INTO {table_name} VALUES {values}"
         self.execute_query(query)
 
