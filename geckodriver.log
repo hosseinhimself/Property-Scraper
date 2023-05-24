@@ -31765,3 +31765,12 @@ console.error: Region.sys.mjs: "Failed to fetch region" (new Error("TIMEOUT", "r
 ALSA lib conf.c:4120:(snd_config_update_r) Cannot access file /usr/share/alsa/alsa.conf
 ALSA lib seq.c:935:(snd_seq_open_noupdate) Unknown SEQ default
 console.error: "update.locale" " file doesn't exist in either the application or GRE directories"
+[Child 14661, Main Thread] WARNING: JSWindowActorChild::SendRawMessage (Conduits, ConduitClosed) not sent: !CanSend() || !mManager || !mManager->CanSend(): file /build/firefox/parts/firefox/build/dom/ipc/jsactor/JSWindowActorChild.cpp:57
+[Child 14661, Main Thread] WARNING: JSWindowActorChild::SendRawMessage (Conduits, ConduitClosed) not sent: !CanSend() || !mManager || !mManager->CanSend(): file /build/firefox/parts/firefox/build/dom/ipc/jsactor/JSWindowActorChild.cpp:57
+[Child 14661, Main Thread] WARNING: JSWindowActorChild::SendRawMessage (Conduits, ConduitClosed) not sent: !CanSend() || !mManager || !mManager->CanSend(): file /build/firefox/parts/firefox/build/dom/ipc/jsactor/JSWindowActorChild.cpp:57
+[Child 14661, Main Thread] WARNING: JSWindowActorChild::SendRawMessage (Conduits, ConduitClosed) not sent: !CanSend() || !mManager || !mManager->CanSend(): file /build/firefox/parts/firefox/build/dom/ipc/jsactor/JSWindowActorChild.cpp:57
+[Child 14661, Main Thread] WARNING: JSWindowActorChild::SendRawMessage (Conduits, ConduitClosed) not sent: !CanSend() || !mManager || !mManager->CanSend(): file /build/firefox/parts/firefox/build/dom/ipc/jsactor/JSWindowActorChild.cpp:57
+[Child 14661, Main Thread] WARNING: JSWindowActorChild::SendRawMessage (Conduits, ConduitClosed) not sent: !CanSend() || !mManager || !mManager->CanSend(): file /build/firefox/parts/firefox/build/dom/ipc/jsactor/JSWindowActorChild.cpp:57
+[Child 14661, Main Thread] WARNING: JSWindowActorChild::SendRawMessage (Conduits, ConduitClosed) not sent: !CanSend() || !mManager || !mManager->CanSend(): file /build/firefox/parts/firefox/build/dom/ipc/jsactor/JSWindowActorChild.cpp:57
+[Child 14661, Main Thread] WARNING: JSWindowActorChild::SendRawMessage (Conduits, ConduitClosed) not sent: !CanSend() || !mManager || !mManager->CanSend(): file /build/firefox/parts/firefox/build/dom/ipc/jsactor/JSWindowActorChild.cpp:57
+1684954385442	Marionette	INFO	Stopped listening on port 42941

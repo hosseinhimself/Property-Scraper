@@ -1,5 +1,6 @@
-# Required Library for PostgreSQL
+# Required Libraries
 import psycopg2
+import pandas as pd
 
 
 class Database:
@@ -23,6 +24,19 @@ class Database:
             print("Connected to PostgreSQL")
         except psycopg2.Error as e:
             print("Error connecting to PostgreSQL:", e)
+
+    def get_table_as_dataframe(self, table_name):
+        query = f"SELECT * FROM {table_name};"
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute(query)
+            columns = [desc[0] for desc in cursor.description]
+            data = cursor.fetchall()
+            df = pd.DataFrame(data, columns=columns)
+            return df
+        except psycopg2.Error as e:
+            print("Error retrieving table as DataFrame:", e)
+            return None
 
     def execute_query(self, query):
         # SQL commands are made in other methods. They use this method to run the SQL commands
