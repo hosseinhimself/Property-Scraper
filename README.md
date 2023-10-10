@@ -1,41 +1,70 @@
-# Kilid-Data-Scientist-Techincal-Test
+# Property Scraper and PostgreSQL Database Interaction
 
-Hello! Thank you very much for your attention!
+This Python script allows for web scraping property data from a specific URL template and storing it in a PostgreSQL database. It utilizes Selenium for web scraping and interacts with a PostgreSQL database to store the scraped property information.
 
-I thought it might be better to briefly explain what I did here. :D
+## Table of Contents
 
-Firstly, I created a module to control my PostgreSQL database.
-Beside the bonus you mentioned about OOP programming, it simplified the handling of tasks.
+- [Overview](#overview)
+- [Dependencies](#dependencies)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-Next, it was the time to scrape data from "Kilid.com". 
-I discovered that the website is dynamic, and some values are lost when using BeautifulSoup alone. So, Selenium was the best choice for scraping and collecting the data effectively.
+## Overview
 
-After saving the scraped data, I utilized another script to convert the table into a pandas dataframe and complete the desired results as mentioned in the questions.
+This script consists of two main parts:
 
-**The output:**
+1. **Web Scraping**: Utilizes Selenium to scrape property information from a specified URL template containing property listings.
 
-    ------------------ OUTPUT ------------------
-    
-    price(toman)      count              location                                     
-    بلوار فردوس غربی        26  6269230769.230769
-    فردوس                   19  9966111111.111111
-    پونک شمالی              16      10476875000.0
-    بلوار فردوس شرقی        15       6120000000.0
-    سازمان برنامه جنوبی     10       7055000000.0
-    پونک جنوبی               8       8710000000.0
-    جنت اباد جنوبی           8       7328750000.0
-    سازمان برنامه شمالی      8       9743750000.0
-    شهر زیبا                 6  9213333333.333334
-    سازمان برنامه مرکزی      5       7848000000.0
-    شهران جنوبی              5       6756000000.0
-    جنت اباد مرکزی           4       6050000000.0
-    جنت اباد                 2      13740000000.0
-    اباذر                    2      12150000000.0
-    باغ فیض                  1       9100000000.0
-    شهران                    1       6650000000.0
-    شهران شمالی              1       6520000000.0
-    ارم                      1      11300000000.0
-    بیمه                     1       6000000000.0
-    شهرک پرواز               1      11000000000.0
+2. **Database Interaction**: Interacts with a PostgreSQL database to store the scraped property data. It provides functions to create tables, insert data, execute queries, and retrieve data as DataFrames.
 
-I hope this clarifies the process and provides an overview of what I did.
+## Dependencies
+
+To run this script, you need the following dependencies:
+
+- **Python 3.x**
+- **psycopg2**: PostgreSQL adapter for Python
+- **pandas**: Data manipulation library
+- **Selenium**: Web scraping library
+- **GeckoDriver**: WebDriver for Firefox (used by Selenium)
+
+You can install these dependencies using pip:
+
+```bash
+pip install psycopg2 pandas selenium
+```
+
+## Setup
+
+1. **Install Dependencies**: Ensure you have the required dependencies installed.
+
+2. **GeckoDriver Installation**:
+   - Download the appropriate version of GeckoDriver for your system from [GeckoDriver releases](https://github.com/mozilla/geckodriver/releases).
+   - Add the GeckoDriver executable to your system's PATH.
+
+3. **Configure PostgreSQL**:
+   - Set up a PostgreSQL server and have the necessary credentials (host, port, database name, username, and password).
+
+4. **Update Configuration**:
+   - Open the script and update the PostgreSQL connection details in the `if __name__ == "__main__":` section.
+
+## Usage
+
+1. Run the script to scrape property data and store it in the PostgreSQL database.
+
+```bash
+python main_process.py
+```
+
+## Contributing
+
+Feel free to contribute to this project by opening issues or submitting pull requests.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Feel free to modify and adapt this README to fit the specifics of your project and code.

@@ -1,8 +1,8 @@
 # Required Libraries
-import psycopg2
-import pandas as pd
+import psycopg2  # PostgreSQL database adapter
+import pandas as pd  # Data manipulation library
 
-
+# Database class for interacting with PostgreSQL
 class Database:
     def __init__(self, host, port, database, user, password):
         self.host = host
@@ -10,9 +10,12 @@ class Database:
         self.database = database
         self.user = user
         self.password = password
-        self.connection = None
+        self.connection = None  # Initialize a connection object as None
 
     def connect(self):
+        '''
+        Establish a connection to the PostgreSQL database.
+        '''
         try:
             self.connection = psycopg2.connect(
                 host=self.host,
@@ -26,6 +29,9 @@ class Database:
             print("Error connecting to PostgreSQL:", e)
 
     def get_table_as_dataframe(self, table_name):
+        '''
+        Fetch data from the specified table and return as a DataFrame.
+        '''
         query = f"SELECT * FROM {table_name};"
         try:
             cursor = self.connection.cursor()
@@ -39,7 +45,9 @@ class Database:
             return None
 
     def execute_query(self, query):
-        # SQL commands are made in other methods. They use this method to run the SQL commands
+        '''
+        Execute the provided SQL query.
+        '''
         try:
             cursor = self.connection.cursor()
             cursor.execute(query)
@@ -49,17 +57,23 @@ class Database:
             print("Error executing query:", e)
 
     def create_table(self, table_name, columns):
-        # SQL format : CREATE TABLE properties (col1 DATATYPE, col2 DATATYPE, ...)
+        '''
+        Create a table with the specified name and columns.
+        '''
         query = f"CREATE TABLE {table_name} ({columns})"
         self.execute_query(query)
 
     def insert_data(self, table_name, values):
-        # SQL format : INSERT INTO properties VALUES (col1, col2, ...)
+        '''
+        Insert data into the specified table.
+        '''
         query = f"INSERT INTO {table_name} VALUES {values}"
         self.execute_query(query)
 
     def close(self):
+        '''
+        Close the database connection if it is open.
+        '''
         if self.connection:
             self.connection.close()
             print("Connection closed")
-

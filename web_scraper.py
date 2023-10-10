@@ -2,18 +2,17 @@
 import re
 import time
 from selenium import webdriver
-from PostgreSQL import Database
+from PostgreSQL import Database  # Assuming this is a custom module for interacting with PostgreSQL
 from selenium.webdriver.common.by import By
 
-
+# Function to convert property price from text to digits
 def price_to_toman(text):
     '''
     Property prices are written in letters.
     For processing, it is necessary to convert them into digits.
     '''
-
     price = None
-    pattern = r"(\d+(\.\d+)?)\s+(میلیون|میلیارد)"
+    pattern = r"(\d+(\.\d+)?)\s+(میلیون|میلیارد)"  # Regular expression pattern for extracting price and unit
     matches = re.findall(pattern, text)
     for match in matches:
         try:
@@ -23,13 +22,12 @@ def price_to_toman(text):
 
         if match[-1] == 'میلیون':
             price *= 1000000
-
         elif match[-1] == 'میلیارد':
             price *= 1000000000
 
     return price
 
-
+# Function to scrape data from the provided URL template
 def scrap_into_dictionary(url_template, pages):
     driver = webdriver.Firefox()
     property_dict = {}
@@ -44,6 +42,7 @@ def scrap_into_dictionary(url_template, pages):
 
         # Collect information for each card
         for item in all_items:
+            # Extract property information
             link = item.get_attribute('href')
             title = [title.text.strip() for title in item.find_elements(By.CLASS_NAME, "title")][0].split('/')
             price = [price.text.strip() for price in item.find_elements(By.CLASS_NAME, "price-primary")][0]
@@ -54,7 +53,7 @@ def scrap_into_dictionary(url_template, pages):
             rooms = 0
             parking = 0
 
-            # collect features
+            # Extract features
             for feature in features:
                 if 'متر' in feature:
                     meterage = feature.split()[0]
@@ -67,7 +66,7 @@ def scrap_into_dictionary(url_template, pages):
 
             price_amount = price_to_toman(price)
 
-
+            # Create a dictionary entry for the property
             property_dict[item_number] = {
                 'id': link.split('/')[-1],
                 'link': link,
@@ -82,21 +81,23 @@ def scrap_into_dictionary(url_template, pages):
 
             item_number += 1
 
-        # A delay is neccessary
+        # Add a delay to be respectful to the website and avoid overloading their servers
         time.sleep(5)
 
     return property_dict
 
-
+# Entry point of the script
 if __name__ == "__main__":
+    # URL template for property listings
     url = "https://kilid.com/buy/tehran-region5?listingTypeId=1&location=246745&sort=DATE_DESC&page="
+    # Scrape property data and store in a dictionary
     all_results = scrap_into_dictionary(url_template=url, pages=10)
 
     # Connect to the database
     db = Database(host='127.0.0.1', port=5432, database='kilid_test_db', user='hosseinmh', password='ASD!@#asd123')
     db.connect()
 
-    # Define table columns and data types
+    # Define table columns and data types for the database table
     columns = '''
     id SERIAL PRIMARY KEY,
     link VARCHAR(200),
@@ -109,12 +110,16 @@ if __name__ == "__main__":
     agency_name VARCHAR(100)
     '''
 
-    # Create the table of properties
+    # Create the table of properties in the database
     db.create_table(table_name='properties', columns=columns)
     id_list = []
+
+    # Insert property data into the database
     for property in all_results.values():
-        # Insert data into the table with format: (ID, link, price, location, usage, meterage, rooms, parking, agency_name)
+        # Format the property values for insertion into the database
         values = str(tuple(property.values())).replace('None', 'NULL')
+        # Insert data into the table with format: (ID, link, price, location, usage, meterage, rooms, parking, agency_name)
         db.insert_data(table_name='properties', values=values)
 
+    # Close the database connection
     db.close()
