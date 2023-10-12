@@ -1,7 +1,7 @@
 
 # Property Scraper and PostgreSQL Database Interaction
 
-This Python project was designed for the role of a Data Scientist at Kilid, focusing on web scraping property data and integrating with a PostgreSQL database for efficient data storage and analysis.
+This Python project was done for the role of a Data Scientist at Kilid, focusing on web scraping property data and integrating with a PostgreSQL database for efficient data storage and analysis.
 
 ## Project Overview
 
