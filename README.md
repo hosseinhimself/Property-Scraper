@@ -53,10 +53,3 @@ python main_process.py
 ```
 
 This command will initiate the process of scraping property data and subsequently store it in the designated PostgreSQL database for further analysis and exploration.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
